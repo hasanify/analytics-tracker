@@ -4,18 +4,22 @@ import { lookup } from "geoip-lite";
 import { IncomingHttpHeaders } from "http";
 import _ from "lodash";
 
-export const sanitizeHeaders = (headers: IncomingHttpHeaders) => {
+export const sanitizeHeaders = (incomingHeaders: IncomingHttpHeaders) => {
   try {
-    let ip = headers["x-forwarded-for"] as string | undefined;
-    let platform = headers["sec-ch-ua-platform"] as string;
-    if (!platform) platform = "Unknown";
-    platform = platform.replace(/"|\\/g, "");
+    const keys = Object.keys(incomingHeaders);
+    const headers: KeyValue[] = [];
+    keys.forEach((key) => {
+      const header = incomingHeaders[key];
+      if (typeof header !== "string") return;
+      let object: KeyValue = {
+        key,
+        value: header
+      };
+      if (key !== "x-forwarded-for") object.value = object.value.replace(/"|\\/g, "");
+      headers.push(object);
+    });
 
-    let agent = headers["user-agent"] as string;
-    if (!agent) agent = "Unknown";
-    agent = agent.replace(/"|\\/g, "");
-
-    return { ip, platform, agent };
+    return headers as KeyValue[];
   } catch (error) {
     console.log(error);
   }

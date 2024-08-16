@@ -8,32 +8,16 @@ class AnalyticsService {
   };
 
   static trackVisitors = async ({
-    ip,
-    platform,
-    agent,
+    headers,
     namespace
   }: {
-    ip?: string;
-    platform: string;
-    agent: string;
+    headers: KeyValue[];
     namespace: string;
   }) => {
-    const country = searchCountry(ip);
+    const ip = headers.find((header) => header.key === "x-forwarded-for");
+    const country = searchCountry(ip?.value);
     await redis.trackVisitors({
-      params: [
-        {
-          key: "country",
-          value: country
-        },
-        {
-          key: "platform",
-          value: platform
-        },
-        {
-          key: "agent",
-          value: agent
-        }
-      ],
+      params: [...headers, { key: "country", value: country }],
       namespace
     });
   };

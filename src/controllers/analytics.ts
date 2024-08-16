@@ -26,10 +26,8 @@ class AnalyticsController {
     try {
       const headers = sanitizeHeaders(req.headers);
       if (!headers) throw new Error("No Headers To Track");
-      console.log(headers);
       const { namespace } = req.params;
-
-      await AnalyticsService.trackVisitors({ ...headers, namespace });
+      await AnalyticsService.trackVisitors({ headers, namespace });
       return res.sendStatus(200);
     } catch (error) {
       next(error);

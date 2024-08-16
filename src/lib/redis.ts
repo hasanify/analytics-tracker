@@ -10,7 +10,7 @@ const trackVisitors = async ({ params, namespace }: { params: KeyValue[]; namesp
     promises.push(client.incrby(key, 1));
   });
   promises.push(client.incrby(`${base}:total`, 1));
-  await Promise.allSettled(promises);
+  const res = await Promise.allSettled(promises);
 };
 
 const getAnalytics = async ({ namespace = "" }: { namespace?: string }) => {
