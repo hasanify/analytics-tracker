@@ -1,0 +1,10 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "files.autoSave": "onFocusChange",
+  "eslint.validate": ["typescript"],
+  "git.ignoreLimitWarning": true
+}

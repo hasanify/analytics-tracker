@@ -1,0 +1,10 @@
+services:
+  app:
+    image: hasanify/analytics-tracker:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
