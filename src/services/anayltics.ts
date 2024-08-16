@@ -14,7 +14,7 @@ class AnalyticsService {
     headers: KeyValue[];
     namespace: string;
   }) => {
-    const ip = headers.find((header) => header.key === "x-forwarded-for");
+    const ip = headers.find((header) => header.key === "ip-address");
     const country = searchCountry(ip?.value);
     await redis.trackVisitors({
       params: [...headers, { key: "country", value: country }],
