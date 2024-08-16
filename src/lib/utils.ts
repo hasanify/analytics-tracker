@@ -23,8 +23,8 @@ export const sanitizeHeaders = (headers: IncomingHttpHeaders) => {
 
 export const searchCountry = (ip?: string) => {
   if (!ip) return "Unknown";
-  const country = lookup(ip);
-  return country || "Unknown";
+  const lookupData = lookup(ip);
+  return lookupData ? lookupData.country : "Unknown";
 };
 
 export const transformArrayToObject = (array: KeyValue[]): TransformedObject => {
