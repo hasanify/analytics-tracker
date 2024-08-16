@@ -4,18 +4,28 @@ import { lookup } from "geoip-lite";
 import { IncomingHttpHeaders } from "http";
 import _ from "lodash";
 
+const headersToTrack = [
+  "additional-data",
+  "color-depth",
+  "display-size",
+  "ip-address",
+  "max-touch-points",
+  "pixel-depth",
+  "platform-custom",
+  "user-agent-custom"
+];
+
 export const sanitizeHeaders = (incomingHeaders: IncomingHttpHeaders) => {
   try {
     const keys = Object.keys(incomingHeaders);
     const headers: KeyValue[] = [];
     keys.forEach((key) => {
-      const header = incomingHeaders[key];
-      if (typeof header !== "string") return;
-      let object: KeyValue = {
+      if (!headersToTrack.includes(key)) return;
+      const header = incomingHeaders[key] as string;
+      let object = {
         key,
         value: header
       };
-      if (key !== "x-forwarded-for") object.value = object.value.replace(/"|\\/g, "");
       headers.push(object);
     });
 

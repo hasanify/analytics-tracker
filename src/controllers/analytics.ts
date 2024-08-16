@@ -16,7 +16,7 @@ class AnalyticsController {
     try {
       const namespace = req.params.namespace;
       const analytics = await AnalyticsService.getAnalytics({ namespace });
-      return res.json({ ...analytics });
+      return res.json({ ...analytics[namespace] });
     } catch (error) {
       next(error);
     }
@@ -26,6 +26,7 @@ class AnalyticsController {
     try {
       const headers = sanitizeHeaders(req.headers);
       if (!headers) throw new Error("No Headers To Track");
+
       const { namespace } = req.params;
       await AnalyticsService.trackVisitors({ headers, namespace });
       return res.sendStatus(200);
